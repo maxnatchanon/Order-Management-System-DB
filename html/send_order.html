@@ -21,20 +21,21 @@
 		<div class="container" id="items">
 			<div class="row">
 				<div class="col-5 col">Model name</div>
-				<div class="col-3 col">Blueprint</div>
 				<div class="col-1 col">Quantity</div>
+				<div class="col-4 col">Blueprint</div>
 			</div>
 			<div class="row">
 				<div class="col-5 col"><input type="text" name="ModelName"></div>
-				<div class="col-3 col"><input type="text" name="Blueprint"></div>
 				<div class="col-1 col"><input type="text" name="Quantity"></div>
+				<div class="col-4 col"><input type="file" name="Blueprint" accept="image/*"></div>
+				
 			</div>
 		</div>
 		
 		<div>
 			<button type="button" class="btn btn-success add-btn" onclick="addItem()"><i class="fas fa-plus"></i> </button>
 		</div>
-		
+
 		<div>
 			<button type="button" class="btn btn-primary send-btn" onclick="sendOrder()">Send</button>
 		</div>
