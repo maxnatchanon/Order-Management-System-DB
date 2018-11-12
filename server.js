@@ -20,9 +20,44 @@ app.post("/insert", (req, res) => {
   var temp = req.body;
   con.connect(err => {
     if (err) throw err;
-    con.query("INSERT INTO", (err, result) => {
-      if (err) throw err;
+
+    //insert orders table
+    var order_id = 1;
+    con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
+      if (result.length != 0) order_id = parseInt(result[0].max) + 1;
     });
+    con.query(
+      `INSERT INTO orders VALUES (${order_id},${new Date()},${temp.cus_id})`,
+      (err, result) => {
+        if (err) throw err;
+      }
+    );
+
+    // for each item
+    for (var i = 0; i < temp.items.length; i++) {
+      // insert model table
+      var model_id = 1;
+      var model_price = 10000; //TO EDIT
+      con.query("SELECT max(model_id) as max FROM model", (err, result) => {
+        if (result.length != 0) model_id = parseInt(result[0].max) + 1;
+      });
+      con.query(
+        `INSERT INTO model VALUES (${model_id},${model_price},${
+          temp.items[i].model_name
+        },${temp.items[i].blueprint},${temp.cus_id})`,
+        (err, result) => {
+          if (err) throw err;
+        }
+      );
+
+      // insert contain table
+      con.query(
+        `INSERT INTO contain VALUES (${order_id},${model_id},${temp.amount})`,
+        (err, result) => {
+          if (err) throw err;
+        }
+      );
+    }
   });
 });
 
@@ -36,16 +71,15 @@ app.post("delete", (req, res) => {
 
 //QUERY	Order list
 app.get("/select", (req, res) => {
-  /*
   con.connect(err => {
     if (err) throw err;
     con.query("SELECT * FROM boats", (err, result) => {
-      console.log(result[0].bid);
+      //console.log(parseInt(result[0].max) + 1);
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(result));
     });
   });
-  */
+
   //ToDo Sun
 });
 
