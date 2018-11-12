@@ -95,20 +95,13 @@ app.post("/delete", (req, res) => {
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
-<<<<<<< HEAD
     con.query(
-      "DELETE FROM orders WHERE order_id = '${req.body.order_id}' ",
+      `DELETE FROM orders WHERE order_id = ${req.body.order_id}`,
       function(err, result) {
         if (err) throw err;
         console.log("deleted...");
       }
     );
-=======
-    con.query('DELETE FROM orders WHERE order_id = ${req.body.order_id}', function (err, result) {
-      if (err) throw err;
-      console.log("deleted...");
-    });
->>>>>>> d7fd198a5839788c54b59c5ed12bdedbcb1ad543
   });
 });
 
@@ -126,23 +119,14 @@ app.get("/select", (req, res) => {
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
-<<<<<<< HEAD
-    con.query(
-      `SELECT * FROM orders WHERE cus_id_orders = ${req.body.cus_id_orders}`,
-      (err, result) => {
-        console.log(result[0].bid);
-        res.setHeader("Content-type", "application/json");
-        res.send(JSON.stringify(result));
-      }
-    );
-=======
-    var x = 'SELECT O.order_id,O.order_date,C.client_name FROM orders O,client C WHERE C.cus_id=${req.body.cus_id_orders} AND C.cus_id=O.cus_id_orders';
+    var x = `SELECT O.order_id,O.order_date,C.client_name FROM orders O,client C WHERE C.cus_id=${
+      req.body.cus_id_orders
+    } AND C.cus_id=O.cus_id_orders`;
     con.query(x, (err, result) => {
       //console.log(result[0].bid);
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(result));
     });
->>>>>>> d7fd198a5839788c54b59c5ed12bdedbcb1ad543
   });
 });
 
