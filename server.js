@@ -34,7 +34,7 @@ app.post("/delete", (req, res) => {
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
-    con.query("DELETE FROM , function (err, result) {
+    con.query("DELETE FROM orders WHERE order_id = ", function (err, result) {
       if (err) throw err;
       console.log("deleted...");
     });
@@ -56,8 +56,7 @@ app.get("/select", (req, res) => {
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
-    var x = 111;
-    con.query("SELECT * FROM orders WHERE cus_id_orders == x ", (err, result) => {
+    con.query("SELECT * FROM orders WHERE cus_id_orders = ", (err, result) => {
       console.log(result[0].bid);
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(result));
