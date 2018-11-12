@@ -1,0 +1,60 @@
+body {
+    font-size: 24px;
+}
+
+.h1 {
+    font-size: 0.95em;
+    font-weight: normal;
+}
+
+.navbar-dark {
+    padding: 8px 25px;
+    background-color: #444444;
+}
+
+.title {
+    font-size: 1em;
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+.container {
+    font-size: 0.75em;
+    margin: 10px 0 15px 0;
+    padding: 0;
+}
+
+.wraper {
+    margin: 0 60px;
+}
+
+input {
+    width: 100%;
+}
+
+.row {
+    margin: 0 -10px;
+    margin-bottom: 5px;
+}
+
+.col {
+    padding: 0 5px 0 10px;
+}
+
+.col-1 {
+    padding-right: 15px;
+}
+
+.add-btn {
+    border-radius: 50px;
+    padding: 5px 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 420px;
+}
+
+.send-btn {
+    margin-top: 80px;
+    width: 120px;
+    background-color: #4286f4;
+}
