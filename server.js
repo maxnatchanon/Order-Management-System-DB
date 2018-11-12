@@ -78,20 +78,21 @@ app.post("/delete", (req, res) => {
 
 //QUERY	Order list
 app.get("/select", (req, res) => {
-  con.connect(err => {
+  /*con.connect(err => {
     if (err) throw err;
     con.query("SELECT * FROM boats", (err, result) => {
       //console.log(parseInt(result[0].max) + 1);
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(result));
     });
-  });
+  });*/
 
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
-    con.query('SELECT * FROM orders WHERE cus_id_orders = ${req.body.cus_id_orders}', (err, result) => {
-      console.log(result[0].bid);
+    var x = 'SELECT O.order_id,O.order_date,C.client_name FROM orders O,client C WHERE C.cus_id=${req.body.cus_id_orders} AND C.cus_id=O.cus_id_orders';
+    con.query(x, (err, result) => {
+      //console.log(result[0].bid);
       res.setHeader("Content-type", "application/json");
       res.send(JSON.stringify(result));
     });
