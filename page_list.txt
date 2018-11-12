@@ -1,0 +1,33 @@
+INSERT	Client send order to company
+		.post("/insert")
+
+		{ model_name, blueprint } -> Model
+		{ amount } -> Contain
+		{ cus_id } -> Order
+		
+		{
+			cus_id: "",
+			items: 	[ { model_name, blueprint, amount }, ... ]
+		}
+
+
+UPDATE	Admin accept order from client
+		.post("/update")
+
+		{ admin_username } -> Order
+		{ model_price } -> Model
+		{ quo_price } -> Quotation
+
+
+DELETE	Client cancel recieved quotation
+		.post("/delete")
+		Delete order by order_id
+		
+
+QUERY	Order list
+		.get("/select")
+
+		{ order_id, order_date, order_status } <- Order
+		{ cus_name } <- Customer_Company
+
+		[{order_id,order_date,order_status,cus_name}]
