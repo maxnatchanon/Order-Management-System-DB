@@ -32,7 +32,7 @@ create table web_admin(		#cannot use the name admin, not valid
 );
 create table orders(			#cannot use the name order, not valid
     order_id int not null,
-    order_date varchar(10) not null,
+    order_date date not null check(order_date<2005-1-1),
     cus_id_orders int not null,
     primary key (order_id),
     foreign key (cus_id_orders) references customer_company(cus_id)
@@ -49,7 +49,7 @@ create table outsource_company(
     out_name varchar(20) not null,
     out_addr varchar(200) not null,
     out_tel varchar(10) not null,
-    out_enail varchar(30) not null,
+    out_email varchar(30) not null,
     primary key (out_id)
 );
 create table hire(
@@ -61,7 +61,7 @@ create table hire(
 );
 create table model(
     model_id int not null,
-    model_price int unsigned not null,
+    model_price int not null check(model_price>0),
     model_name varchar(30) not null,
     blueprint varchar(200) not null,
     cus_id_model int not null,
@@ -84,24 +84,24 @@ create table accept(
     primary key (admin_username,order_id)
 );
 create table quotation(
-    order_id_quo int not null,
-    quo_date date not null,  #determine range of date!!
-    quo_price int unsigned not null,
+	order_id_quo int not null,
+    quo_date date not null check(quo_date>2005-1-1), 
+    quo_price int not null check(quo_price>0),
     primary key (order_id_quo),
     foreign key (order_id_quo) references orders(order_id) on delete cascade
-);
+	);
 create table bill(
-    order_id_bill int not null,
-    bill_date date not null,#determine range of date!!
-    bill_price int unsigned not null,
-    payment_date date not null,
+	order_id_bill int not null,
+    bill_date date not null,
+    bill_price int not null check(bill_price>0),
+    payment_date date not null check (payment_date>2005-1-1),
     primary key (order_id_bill) ,
     foreign key (order_id_bill) references orders(order_id) on delete cascade
-);
+	);
 create table sell_order(
-    order_id_sell_order int not null,
-    sell_date date not null, #determine range of date!!
-    sell_price date not null, #determine range of date!!
+	order_id_sell_order int not null,
+    sell_date date not null check (sell_date>2055-1-1), 
+    sell_price date not null check(sell_price>0), 
     primary key (order_id_sell_order),
     foreign key (order_id_sell_order) references orders(order_id) on delete cascade
-);
+	);

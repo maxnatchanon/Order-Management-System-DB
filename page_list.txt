@@ -22,16 +22,23 @@ UPDATE	Admin accept order from client
 		.post("/update")
 
 		{ admin_username } -> Order
-		{ model_price } -> Model
 		{ quo_price } -> Quotation
 		
 		{
+			order_id : "",
 			admin_username : "",
-			model_price : "",
 			quo_price : ""
 		}
 
-
+UPDATE	Admin update model price
+		.post("updateprice")
+		#in
+		{
+			model_id : "",
+			model_price : ""
+		}
+		
+		
 DELETE	Client cancel recieved quotation
 		.post("/delete")
 		Delete order by order_id
@@ -46,3 +53,13 @@ QUERY	Order list
 		{ cus_name } <- Customer_Company
 
 		[{order_id,order_date,order_status,cus_name}]
+
+QUERY	Model list of order
+		#sql command
+		select model_id_contain from contain where order_id_contain = req.body.order_id
+		
+		.post("/selectorder")
+		#in
+		{order_id}
+		#out
+		[{model_id},{model_id}]
