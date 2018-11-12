@@ -22,18 +22,17 @@ UPDATE	Admin accept order from client
 		.post("/update")
 
 		{ admin_username } -> Order
-		{ model_price } -> Model
 		{ quo_price } -> Quotation
 		
 		{
 			order_id : "",
 			admin_username : "",
-			model_price : "",
 			quo_price : ""
 		}
 
 UPDATE	Admin update model price
 		.post("updateprice")
+		#in
 		{
 			model_id : "",
 			model_price : ""
@@ -56,11 +55,11 @@ QUERY	Order list
 		[{order_id,order_date,order_status,cus_name}]
 
 QUERY	Model list of order
-		sql command
+		#sql command
 		select model_id_contain from contain where order_id_contain = req.body.order_id
 		
 		.post("/selectorder")
-		in
+		#in
 		{order_id}
-		out
+		#out
 		[{model_id},{model_id}]
