@@ -61,3 +61,20 @@ create table hire(
     foreign key (order_id_hire) references orders(order_id),
     foreign key (out_id_hire) references outsource_company(out_id)
 	);
+create table model(
+	model_id int not null,
+    model_price int unsigned not null,
+    model_name varchar(30) not null,
+    blueprint varchar(200) not null,
+    cus_id_model int not null,
+    primary key (model_id),
+    foreign key (cus_id_model) references customer_company(cus_id)
+	);
+create table contain(
+	order_id_contain int not null,
+    model_id_contain int not null,
+    amount int unsigned not null,
+    primary key (order_id_contain,model_id_contain),
+    foreign key (order_id_contain) references orders(order_id),
+    foreign key (model_id_contain) references model(model_id)
+	);
