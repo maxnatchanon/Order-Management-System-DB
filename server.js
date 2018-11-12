@@ -62,7 +62,33 @@ app.post("/insert", (req, res) => {
 });
 
 //UPDATE	Admin accept order from client
-app.post("/update", (req, res) => {});
+app.post("/update", (req, res) => {
+  var temp = req.body;
+  con.connect(err => {
+    if (err) throw err;
+    // insert accept table
+    con.query(
+      `INSERT INTO accept VALUES (${temp.admin_username},${temp.order_id})`
+    );
+    con.query(
+      `INSERT INTO quotation VALUES (${temp.order_id},${new Date()},${
+        temp.quo_price
+      })`
+    );
+  });
+});
+
+//UPDATE	Admin update model price
+app.post("/updateprice", (req, res) => {
+  con.connect(err => {
+    if (err) throw err;
+    con.query(
+      `UPDATE model SET model_price = ${
+        req.body.model_price
+      } WHERE model_id = ${req.body.model_id}`
+    );
+  });
+});
 
 //DELETE	Client cancel recieved quotation
 app.post("/delete", (req, res) => {
