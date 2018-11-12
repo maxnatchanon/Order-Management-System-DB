@@ -41,10 +41,10 @@ create table orders(			#cannot use the name order, not valid
 	);
 create table work_on(
     order_id_work_on int not null,
-    cus_id int not null,
-    primary key (order_id_worko_n,cus_id_work_on),
+    cus_id_work_on int not null,
+    primary key (order_id_work_on,cus_id_work_on),
     foreign key (cus_id_work_on) references customer_company(cus_id),
-    foreign key (order_id_work_on) references orders(oder_id) #error
+    foreign key (order_id_work_on) references orders(order_id)
 	);
 create table outsource_company(
     out_id int not null,
