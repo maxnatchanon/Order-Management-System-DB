@@ -12,6 +12,10 @@ body {
     background-color: #444444;
 }
 
+.client-name {
+    font-size: 0.85em;
+}
+
 .title {
     font-size: 1em;
     margin-top: 35px;
@@ -60,11 +64,11 @@ input[type="file"] {
     padding: 5px 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 360px;
+    margin-left: 320px;
 }
 
 .send-btn {
-    margin-top: 80px;
+    margin-top: 50px;
     width: 120px;
     background-color: #4286f4;
 }
