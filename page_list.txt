@@ -7,7 +7,14 @@ INSERT	Client send order to company
 		
 		{
 			cus_id: "",
-			items: 	[ { model_name, blueprint, amount }, ... ]
+			items: 	[ 
+				{ 
+					model_name : "",
+					blueprint : "", 
+					amount : "" 
+				} , 
+				... 
+			]
 		}
 
 
@@ -17,11 +24,19 @@ UPDATE	Admin accept order from client
 		{ admin_username } -> Order
 		{ model_price } -> Model
 		{ quo_price } -> Quotation
+		
+		{
+			admin_username : "",
+			model_price : "",
+			quo_price : ""
+		}
 
 
 DELETE	Client cancel recieved quotation
 		.post("/delete")
 		Delete order by order_id
+		
+		{ order_id : "" }
 		
 
 QUERY	Order list
