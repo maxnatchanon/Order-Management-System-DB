@@ -62,7 +62,7 @@ create table hire(
     foreign key (out_id_hire) references outsource_company(out_id)
 	);
 create table model(
-	model_id int not null,
+    model_id int not null,
     model_price int unsigned not null,
     model_name varchar(30) not null,
     blueprint varchar(200) not null,
@@ -71,10 +71,32 @@ create table model(
     foreign key (cus_id_model) references customer_company(cus_id)
 	);
 create table contain(
-	order_id_contain int not null,
+    order_id_contain int not null,
     model_id_contain int not null,
     amount int unsigned not null,
     primary key (order_id_contain,model_id_contain),
     foreign key (order_id_contain) references orders(order_id),
     foreign key (model_id_contain) references model(model_id)
+	);
+create table quotation(
+    order_id_quo int not null,
+    quo_date date not null,  #determine range of date!!
+    quo_price int unsigned not null,
+    primary key (order_id_quo),
+    foreign key (order_id_quo) references orders(order_id) on delete cascade
+	);
+create table bill(
+    order_id_bill int not null,
+    bill_date date not null,#determine range of date!!
+    bill_price int unsigned not null,
+    payment_date date not null,
+    primary key (order_id_bill) ,
+    foreign key (order_id_bill) references orders(order_id) on delete cascade
+	);
+create table sell_order(
+    order_id_sell_order int not null,
+    sell_date date not null, #determine range of date!!
+    sell_price date not null, #determine range of date!!
+    primary key (order_id_sell_order),
+    foreign key (order_id_sell_order) references orders(order_id) on delete cascade
 	);
