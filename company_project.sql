@@ -12,6 +12,7 @@ create table client(
 	cus_id int not null,
     client_name varchar(20) not null,
     client_email varchar(30) not null,
+	cus_password varchar(20) not null,
     client_tel varchar(15) not null,
     primary key (cus_id,client_name),
     foreign key (cus_id) references customer_company(cus_id) on delete cascade
