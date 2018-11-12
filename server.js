@@ -130,6 +130,18 @@ app.get("/select", (req, res) => {
   });
 });
 
+//get model_id from related order_id
+app.get("/selectorder", (req, res) => {
+    if (err) throw err;
+    var y = `SELECT C.model_id_contain FROM contain C WHERE C.order_id_contain=${req.body.order_id}`;
+    con.query(y, (err, result) => {
+      //console.log(result[0].bid);
+      res.setHeader("Content-type", "application/json");
+      res.send(JSON.stringify(result));
+    });
+  });
+});
+
 /*
 Send HTML file to show on web browser
 */
