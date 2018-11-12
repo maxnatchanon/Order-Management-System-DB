@@ -65,8 +65,15 @@ app.post("/insert", (req, res) => {
 app.post("/update", (req, res) => {});
 
 //DELETE	Client cancel recieved quotation
-app.post("delete", (req, res) => {
+app.post("/delete", (req, res) => {
   //ToDo Sun
+  con.connect(err => {
+    if (err) throw err;
+    con.query("DELETE FROM orders WHERE order_id = '${req.body.order_id}' ", function (err, result) {
+      if (err) throw err;
+      console.log("deleted...");
+    });
+  });
 });
 
 //QUERY	Order list
@@ -81,6 +88,14 @@ app.get("/select", (req, res) => {
   });
 
   //ToDo Sun
+  con.connect(err => {
+    if (err) throw err;
+    con.query("SELECT * FROM orders WHERE cus_id_orders = '${req.body.cus_id_orders}'", (err, result) => {
+      console.log(result[0].bid);
+      res.setHeader("Content-type", "application/json");
+      res.send(JSON.stringify(result));
+    });
+  });
 });
 
 /*
