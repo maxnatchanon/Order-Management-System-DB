@@ -32,7 +32,7 @@ create table web_admin(		#cannot use the name admin, not valid
 );
 create table orders(			#cannot use the name order, not valid
     order_id int not null,
-    order_date date not null check(order_date<2005-01-01),
+    order_date date not null check(order_date>'2005-01-01'),
     cus_id_orders int not null,
     primary key (order_id),
     foreign key (cus_id_orders) references customer_company(cus_id)
@@ -85,7 +85,7 @@ create table accept(
 );
 create table quotation(
 	order_id_quo int not null,
-    quo_date date not null check(quo_date>2005-01-01), 
+    quo_date date not null check(quo_date>'2005-01-01'), 
     quo_price int not null check(quo_price>0),
     primary key (order_id_quo),
     foreign key (order_id_quo) references orders(order_id) on delete cascade
@@ -94,13 +94,13 @@ create table bill(
 	order_id_bill int not null,
     bill_date date not null,
     bill_price int not null check(bill_price>0),
-    payment_date date not null check (payment_date>2005-01-01),
+    payment_date date not null check (payment_date>'2005-01-01'),
     primary key (order_id_bill) ,
     foreign key (order_id_bill) references orders(order_id) on delete cascade
 	);
 create table sell_order(
 	order_id_sell_order int not null,
-    sell_date date not null check (sell_date>2005-01-01), 
+    sell_date date not null check (sell_date>'2005-01-01'), 
     sell_price date not null check(sell_price>0), 
     primary key (order_id_sell_order),
     foreign key (order_id_sell_order) references orders(order_id) on delete cascade
