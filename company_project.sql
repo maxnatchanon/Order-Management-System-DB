@@ -32,7 +32,7 @@ create table web_admin(		#cannot use the name admin, not valid
 );
 create table orders(			#cannot use the name order, not valid
     order_id int not null,
-    order_date varchar(10) not null,
+    order_date date not null check(order_date<2005-1-1),
     cus_id_orders int not null,
     primary key (order_id),
     foreign key (cus_id_orders) references customer_company(cus_id)
