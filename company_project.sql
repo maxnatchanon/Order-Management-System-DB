@@ -105,3 +105,4 @@ create table sell_order(
     primary key (order_id_sell_order),
     foreign key (order_id_sell_order) references orders(order_id) on delete cascade
 	);
+create index cus_id_orders_index using hash on orders(cus_id_orders,order_id);
