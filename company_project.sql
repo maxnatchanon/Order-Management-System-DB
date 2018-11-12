@@ -54,3 +54,10 @@ create table outsource_company(
     out_enail varchar(30) not null,
     primary key (out_id)
 	);
+create table hire(
+    order_id_hire int not null,
+    out_id_hire int not null,
+    primary key (order_id_hire,out_id_hire),
+    foreign key (order_id_hire) references orders(order_id),
+    foreign key (out_id_hire) references outsource_company(out_id)
+	);
