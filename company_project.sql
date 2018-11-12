@@ -2,6 +2,7 @@ create database company_project;
 use company_project;
 create table customer_company(
     cus_id int not null,
+    cus_password varchar(20) not null,
     cus_name varchar(20) not null,
     cus_email varchar(30) not null,
     cus_tel varchar(15) not null,
