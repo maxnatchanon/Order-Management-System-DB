@@ -34,6 +34,7 @@ create table orders(			#cannot use the name order, not valid
     order_id int not null,
     order_date date not null check(order_date>'2005-01-01'),
     cus_id_orders int not null,
+    order_status varchar(20) not null,
     primary key (order_id),
     foreign key (cus_id_orders) references customer_company(cus_id)
 );
