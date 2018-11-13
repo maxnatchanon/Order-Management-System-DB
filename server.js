@@ -6,6 +6,7 @@ const mysql = require("mysql");
 const port = 3000;
 
 app.use(parser.json());
+app.use(express.static('./'))
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -132,6 +133,7 @@ app.get("/select", (req, res) => {
 
 //get model_id from related order_id
 app.get("/selectorder", (req, res) => {
+  con.connect(err => {
     if (err) throw err;
     var y = `SELECT C.model_id_contain FROM contain C WHERE C.order_id_contain=${req.body.order_id}`;
     con.query(y, (err, result) => {
@@ -149,6 +151,16 @@ Send HTML file to show on web browser
 app.get("/", (req, res) => {
   console.log(path.join(__dirname + "/test.html"));
   res.sendFile(path.join(__dirname + "/test.html"));
+});
+
+app.get("/sendorder", (req, res) => {
+  console.log(path.join(__dirname + "/html/send_order.html"));
+  res.sendFile(path.join(__dirname + "/html/send_order.html"));
+});
+
+app.get("/allorder", (req, res) => {
+  console.log(path.join(__dirname + "/html/all_order.html"));
+  res.sendFile(path.join(__dirname + "/html/all_order.html"));
 });
 
 app.listen(port, () => console.log(`listening on port ${port}`));
