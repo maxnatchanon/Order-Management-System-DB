@@ -1,5 +1,5 @@
 const Http = new XMLHttpRequest();
-const url='/select';
+const url='/selectadmin';
 Http.open("GET", url);
 Http.send();
 Http.onreadystatechange = function() {
@@ -30,6 +30,7 @@ Http.onreadystatechange = function() {
             for (var i = 0; i < 5; i++) row.appendChild(col[i]);
             document.getElementById("orders").appendChild(row);
         }
+        //Http.abort();
     }
 }
 

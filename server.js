@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const port = 3000;
 
 app.use(parser.json());
-app.use(express.static('./'))
+app.use(express.static("./"));
 
 var con = mysql.createConnection({
   host: "localhost",
@@ -17,62 +17,84 @@ var con = mysql.createConnection({
 
 //INSERT	Client send order to company
 app.post("/insert", (req, res) => {
-  console.log(`insert\n${req.body}`);
-  var temp = req.body;
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if (!con._connectCalled) {
+    console.log(`insert\n${req.body}`);
+    var temp = req.body;
 
-  var order_id = 1;
-  var sw = 0;
-  con.connect(err => {
-    if (err) throw err;
+    var order_id = 1;
+    var sw = 0;
+    con.connect(err => {
+      if (err) throw err;
 
-    //insert orders table
-    con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
-      if (result.length != 0) order_id = parseInt(result[0].max) + 1;
-      con.query(
-      `INSERT INTO orders VALUES (${order_id},Date('2018-01-02'),${temp.cus_id},'new_order')`,
-      (err, result) => {
-        if (err) throw err;
-        console.log("jui1");
+      //insert orders table
+      con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
+        if (result.length != 0) order_id = parseInt(result[0].max) + 1;
+        con.query(
+          `INSERT INTO orders VALUES (${order_id},NOW(),${
+            temp.cus_id
+          },'new_order')`,
+          (err, result) => {
+            if (err) throw err;
+            console.log("jui1");
 
-        // insert model table
-        var model_id = 1;
-        var model_price = 10000; //TO EDIT
+            // insert model table
+            var model_id = 1;
+            var model_price = 10000; //TO EDIT
 
-        con.query("SELECT max(model_id) as max FROM model", (err, result) => {
-          if (result.length != 0) model_id = parseInt(result[0].max) + 1;
-
-          var model = [];
-          for (var i = 0 ; i < temp.items.length ; i++) {
-            model.push([model_id+i,model_price,temp.items[i].model_name,temp.items[i].blueprint,parseInt(temp.cus_id)]);
-          }
-          console.log(model);
-          con.query(
-              "INSERT INTO model VALUES?",[model],
+            con.query(
+              "SELECT max(model_id) as max FROM model",
               (err, result) => {
-                if (err) throw err;
-                console.log("jui2");
-              }
-          );
+                if (result.length != 0) model_id = parseInt(result[0].max) + 1;
 
-          var model2 = [];
-          for (var i = 0 ; i < temp.items.length ; i++) {
-            model2.push([order_id,model_id+i,temp.items[i].amount]);
+                var model = [];
+                for (var i = 0; i < temp.items.length; i++) {
+                  model.push([
+                    model_id + i,
+                    model_price,
+                    temp.items[i].model_name,
+                    "222",
+                    parseInt(temp.cus_id)
+                  ]);
+                }
+                console.log(model);
+                con.query(
+                  "INSERT INTO model VALUES?",
+                  [model],
+                  (err, result) => {
+                    if (err) throw err;
+                    console.log("jui2");
+                  }
+                );
+
+                var model2 = [];
+                for (var i = 0; i < temp.items.length; i++) {
+                  model2.push([order_id, model_id + i, temp.items[i].amount]);
+                }
+                console.log(model2);
+                con.query(
+                  "INSERT INTO contain VALUES?",
+                  [model2],
+                  (err, result) => {
+                    if (err) throw err;
+                    console.log("jui3");
+                  }
+                );
+              }
+            );
           }
-          console.log(model2);
-          con.query(
-              "INSERT INTO contain VALUES?",[model2],
-              (err, result) => {
-                if (err) throw err;
-                console.log("jui3");
-              }
-          ); 
-
-        });
-      }
-    );
-});
-  });
-
+        );
+      });
+    });
+  }
 });
 
 //UPDATE	Admin accept order from client
@@ -85,11 +107,13 @@ app.post("/update", (req, res) => {
       `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
     );
     con.query(
-      `INSERT INTO quotation VALUES (${temp.order_id},Date(),${
-        temp.quo_price
-      })`
+      `INSERT INTO quotation VALUES (${temp.order_id},Date(),${temp.quo_price})`
     );
-    con.query(`UPDATE orders SET order_status = 'quotation_sent' WHERE order_id = ${temp.order_id}`)
+    con.query(
+      `UPDATE orders SET order_status = 'quotation_sent' WHERE order_id = ${
+        temp.order_id
+      }`
+    );
   });
 });
 
@@ -134,20 +158,29 @@ app.get("/select", (req, res) => {
       res.send(JSON.stringify(result));
     });
   });
-
 });
 
 app.get("/selectadmin", (req, res) => {
-  con.connect(err => {
-    if (err) throw err;
-    var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id_orders ;`;
-    con.query(x, (err, result) => {
-      console.log(result);
-      //res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(result));
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
     });
-  });
-
+  }
+  if (!con._connectCalled) {
+    con.connect(err => {
+      if (err) throw err;
+      var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id_orders ;`;
+      con.query(x, (err, result) => {
+        console.log(result);
+        //res.setHeader("Content-type", "application/json");
+        res.send(JSON.stringify(result));
+      });
+    });
+  }
 });
 
 //get model_id from related order_id
