@@ -135,7 +135,7 @@ app.get("/select", (req, res) => {
 app.get("/selectorder", (req, res) => {
   con.connect(err => {
     if (err) throw err;
-    var y = `SELECT C.model_id_contain,M.blueprint FROM contain C,model M WHERE C.order_id_contain=${req.body.order_id} AND C.model_id_contain=M.model_id`;
+    var y = `SELECT M.model_name,C.model_id_contain,M.blueprint FROM contain C,model M WHERE C.order_id_contain=${req.body.order_id} AND C.model_id_contain=M.model_id`;
     con.query(y, (err, result) => {
       //console.log(result[0].bid);
       res.setHeader("Content-type", "application/json");
