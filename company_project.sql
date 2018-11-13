@@ -72,7 +72,7 @@ create table model(
 create table contain(
     order_id_contain int not null,
     model_id_contain int not null,
-    amount int unsigned not null,
+    quantity int unsigned not null,
     primary key (order_id_contain,model_id_contain),
     foreign key (order_id_contain) references orders(order_id),
     foreign key (model_id_contain) references model(model_id)
