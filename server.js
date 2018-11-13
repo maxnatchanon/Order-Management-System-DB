@@ -12,54 +12,67 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "root",
-  database: "boatrental"
+  database: "company_project"
 });
 
 //INSERT	Client send order to company
 app.post("/insert", (req, res) => {
   console.log(`insert\n${req.body}`);
   var temp = req.body;
+
+  var order_id = 1;
+  var sw = 0;
   con.connect(err => {
     if (err) throw err;
 
     //insert orders table
-    var order_id = 1;
     con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
       if (result.length != 0) order_id = parseInt(result[0].max) + 1;
-    });
-    con.query(
-      `INSERT INTO orders VALUES (${order_id},${new Date()},${temp.cus_id})`,
+      con.query(
+      `INSERT INTO orders VALUES (${order_id},Date('2018-01-02'),${temp.cus_id},'new_order')`,
       (err, result) => {
         if (err) throw err;
+        console.log("jui1");
+
+        // insert model table
+        var model_id = 1;
+        var model_price = 10000; //TO EDIT
+
+        con.query("SELECT max(model_id) as max FROM model", (err, result) => {
+          if (result.length != 0) model_id = parseInt(result[0].max) + 1;
+
+          var model = [];
+          for (var i = 0 ; i < temp.items.length ; i++) {
+            model.push([model_id+i,model_price,temp.items[i].model_name,temp.items[i].blueprint,parseInt(temp.cus_id)]);
+          }
+          console.log(model);
+          con.query(
+              "INSERT INTO model VALUES?",[model],
+              (err, result) => {
+                if (err) throw err;
+                console.log("jui2");
+              }
+          );
+
+          var model2 = [];
+          for (var i = 0 ; i < temp.items.length ; i++) {
+            model2.push([order_id,model_id+i,temp.items[i].amount]);
+          }
+          console.log(model2);
+          con.query(
+              "INSERT INTO contain VALUES?",[model2],
+              (err, result) => {
+                if (err) throw err;
+                console.log("jui3");
+              }
+          ); 
+
+        });
       }
     );
-
-    // for each item
-    for (var i = 0; i < temp.items.length; i++) {
-      // insert model table
-      var model_id = 1;
-      var model_price = 10000; //TO EDIT
-      con.query("SELECT max(model_id) as max FROM model", (err, result) => {
-        if (result.length != 0) model_id = parseInt(result[0].max) + 1;
-      });
-      con.query(
-        `INSERT INTO model VALUES (${model_id},${model_price},${
-          temp.items[i].model_name
-        },${temp.items[i].blueprint},${temp.cus_id})`,
-        (err, result) => {
-          if (err) throw err;
-        }
-      );
-
-      // insert contain table
-      con.query(
-        `INSERT INTO contain VALUES (${order_id},${model_id},${temp.amount})`,
-        (err, result) => {
-          if (err) throw err;
-        }
-      );
-    }
+});
   });
+
 });
 
 //UPDATE	Admin accept order from client
@@ -69,13 +82,14 @@ app.post("/update", (req, res) => {
     if (err) throw err;
     // insert accept table
     con.query(
-      `INSERT INTO accept VALUES (${temp.admin_username},${temp.order_id})`
+      `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
     );
     con.query(
-      `INSERT INTO quotation VALUES (${temp.order_id},${new Date()},${
+      `INSERT INTO quotation VALUES (${temp.order_id},Date(),${
         temp.quo_price
       })`
     );
+    con.query(`UPDATE orders SET order_status = 'quotation_sent' WHERE order_id = ${temp.order_id}`)
   });
 });
 
@@ -108,15 +122,6 @@ app.post("/delete", (req, res) => {
 
 //QUERY	Order list
 app.get("/select", (req, res) => {
-  /*con.connect(err => {
-    if (err) throw err;
-    con.query("SELECT * FROM boats", (err, result) => {
-      //console.log(parseInt(result[0].max) + 1);
-      res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(result));
-    });
-  });*/
-
   //ToDo Sun
   con.connect(err => {
     if (err) throw err;
@@ -129,13 +134,28 @@ app.get("/select", (req, res) => {
       res.send(JSON.stringify(result));
     });
   });
+
+});
+
+app.get("/selectadmin", (req, res) => {
+  con.connect(err => {
+    if (err) throw err;
+    var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id_orders ;`;
+    con.query(x, (err, result) => {
+      console.log(result);
+      //res.setHeader("Content-type", "application/json");
+      res.send(JSON.stringify(result));
+    });
+  });
+
 });
 
 //get model_id from related order_id
 app.get("/selectorder", (req, res) => {
   con.connect(err => {
     if (err) throw err;
-    var y = `SELECT M.model_name,C.model_id_contain,M.blueprint FROM contain C,model M WHERE C.order_id_contain=${req.body.order_id} AND C.model_id_contain=M.model_id`;
+    var y = `SELECT M.model_name,M.model_id,M.blueprint FROM contain C,model M WHERE C.order_id_contain=1 AND C.model_id_contain=M.model_id`;
+
     con.query(y, (err, result) => {
       //console.log(result[0].bid);
       res.setHeader("Content-type", "application/json");
@@ -161,6 +181,10 @@ app.get("/sendorder", (req, res) => {
 app.get("/allorder", (req, res) => {
   console.log(path.join(__dirname + "/html/all_order.html"));
   res.sendFile(path.join(__dirname + "/html/all_order.html"));
+});
+app.get("/confirm_price", (req, res) => {
+  console.log(path.join(__dirname + "/html/confirm_price.html"));
+  res.sendFile(path.join(__dirname + "/html/confirm_price.html"));
 });
 
 app.listen(port, () => console.log(`listening on port ${port}`));
