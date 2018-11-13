@@ -74,7 +74,7 @@ function createObj() {
         var item = {
             model_name : itemData.item(i).getElementsByClassName("modelName")[0].value,
             blueprint : getImageBinary(itemData.item(i).getElementsByClassName("blueprint")[0]), 
-            quantity :itemData.item(i).getElementsByClassName("quantity")[0].value
+            amount :itemData.item(i).getElementsByClassName("quantity")[0].value
         }
         itemList.items.push(item);
     }
