@@ -27,6 +27,7 @@ Http.onreadystatechange = function() {
             input.type = "text";
             col3.appendChild(input);
             row.appendChild(col3);
+            document.getElementById("orders").appendChild(row);
         }
     }
 }
