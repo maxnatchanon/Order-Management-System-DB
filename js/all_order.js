@@ -4,7 +4,7 @@ Http.open("GET", url);
 Http.send();
 Http.onreadystatechange = function() {
     if (this.readyState==4 && this.status==200) {
-        var json = JSON.stringify(Http.responseText);
+        var json = JSON.parse(Http.responseText);
         
         for (var item = 0; item < json.length; item++) {
             var row = document.createElement("div");
