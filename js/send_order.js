@@ -63,7 +63,7 @@ function createObj() {
 
     // Create empty item list with cus_id
     var itemList = {
-        cus_id: "", // TODO: Add cus_id
+        cus_id: "1", // TODO: Add cus_id
         items: []
     }
 
@@ -73,12 +73,21 @@ function createObj() {
         // Create item data from each element then append to itemList
         var item = {
             model_name : itemData.item(i).getElementsByClassName("modelName")[0].value,
-            blueprint : itemData.item(i).getElementsByClassName("blueprint")[0].value, 
-            amount :itemData.item(i).getElementsByClassName("quantity")[0].value
+            blueprint : getImageBinary(itemData.item(i).getElementsByClassName("blueprint")[0]), 
+            quantity :itemData.item(i).getElementsByClassName("quantity")[0].value
         }
         itemList.items.push(item);
     }
 
     return itemList;
 
+}
+
+function getImageBinary(input) {
+    var fReader = new FileReader();
+    fReader.readAsBinaryString(input.files[0]);
+    fReader.onloadend = function(event){
+        return event.target.result;
+        //img.src = 'data:image/jpeg;base64,' + btoa(event.target.result);
+    }
 }
