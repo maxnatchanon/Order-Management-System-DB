@@ -62,4 +62,4 @@ QUERY	Model list of order
 		#in
 		{order_id}
 		#out
-		[{model_id},{model_id}]
+		[{model_id},{blueprint}]
