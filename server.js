@@ -61,7 +61,7 @@ app.post("/insert", (req, res) => {
                     model_id + i,
                     model_price,
                     temp.items[i].model_name,
-                    "222",
+                    "",
                     parseInt(temp.cus_id)
                   ]);
                 }
@@ -97,6 +97,30 @@ app.post("/insert", (req, res) => {
   }
 });
 
+// UPDATE blueprint
+// TODO: Check pls
+app.post("/updateblueprint", (req, res) => {
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if (!con._connectCalled) {
+    var temp = req.body;
+    con.connect(err => {
+      if (err) throw err;
+      // Update blueprint
+      con.query(
+        `UPDATE model SET blueprint = ${temp.blueprint} WHERE model_name = ${temp.model_name}`
+      );
+    });
+  }
+});
+
 //UPDATE	Admin accept order from client
 app.post("/update", (req, res) => {
   var temp = req.body;
@@ -110,7 +134,7 @@ app.post("/update", (req, res) => {
       `INSERT INTO quotation VALUES (${temp.order_id},Date(),${temp.quo_price})`
     );
     con.query(
-      `UPDATE orders SET order_status = 'quotation_sent' WHERE order_id = ${
+      `UPDATE orders SET order_status = 'Quotation sent' WHERE order_id = ${
         temp.order_id
       }`
     );

@@ -73,9 +73,10 @@ function createObj() {
         // Create item data from each element then append to itemList
         var item = {
             model_name : itemData.item(i).getElementsByClassName("modelName")[0].value,
-            blueprint : getImageBinary(itemData.item(i).getElementsByClassName("blueprint")[0]), 
+            blueprint : "", 
             amount :itemData.item(i).getElementsByClassName("quantity")[0].value
         }
+        getImageBinary(itemData.item(i).getElementsByClassName("blueprint")[0], itemData.item(i).getElementsByClassName("modelName")[0].value)
         itemList.items.push(item);
     }
 
@@ -83,11 +84,55 @@ function createObj() {
 
 }
 
-function getImageBinary(input) {
+function getImageBinary(input, model_name) {
     var fReader = new FileReader();
     fReader.readAsBinaryString(input.files[0]);
     fReader.onloadend = function(event){
-        return event.target.result;
+        //console.log(event.target.result);
+        if (typeof model_name != 'undefined') {
+            sendBlueprintReq(model_name, event.target.result);
+            //console.log({mn: model_name, blueprint: event.target.result});
+        }
         //img.src = 'data:image/jpeg;base64,' + btoa(event.target.result);
     }
 }
+
+function sendBlueprintReq(modelName, blueprintBin) {
+    // Create new http post request
+    var xhr = new XMLHttpRequest();
+    var url = "/updateblueprint";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+        }
+    };
+    // Create and send data
+    var item = {model_name: modelName, blueprint: blueprintBin}
+    var data = JSON.stringify(item);
+    xhr.send(data);
+}
+
+// function test() {
+//     // Create empty item list with cus_id
+//     var itemList = {
+//         cus_id: "1", // TODO: Add cus_id
+//         items: []
+//     }
+
+//     // Get all item-data elements then loop through each element
+//     var itemData = document.getElementsByClassName("item-data");
+//     for (var i = 0; i < itemData.length; i++) {
+//         // Create item data from each element then append to itemList
+//         var item = {
+//             model_name : itemData.item(i).getElementsByClassName("modelName")[0].value,
+//             blueprint : getImageBinary(itemData.item(i).getElementsByClassName("blueprint")[0]), 
+//             amount :itemData.item(i).getElementsByClassName("quantity")[0].value
+//         }
+//         itemList.items.push(item);
+//     }
+//     var itemList = createObj();
+//     var data = JSON.stringify(itemList);
+//     console.log(itemList);
+// }
