@@ -43,14 +43,14 @@ app.post("/insert", (req, res) => {
         con.query(
           `INSERT INTO orders VALUES (${order_id},NOW(),${
             temp.cus_id
-          },'new_order')`,
+          },'New order')`,
           (err, result) => {
             if (err) throw err;
             console.log("jui1");
 
             // insert model table
             var model_id = 1;
-            var model_price = 10000; //TO EDIT
+            var model_price = 0; //TO EDIT
 
             con.query(
               "SELECT max(model_id) as max FROM model",
@@ -187,7 +187,7 @@ app.get("/select", (req, res) => {
   con.connect(err => {
     if (err) throw err;
     var x = `SELECT O.order_id,O.order_date,C.client_name FROM orders O,client C WHERE C.cus_id=${
-      req.body.cus_id_orders
+      req.body.cus_id
     } AND C.cus_id=O.cus_id_orders`;
     con.query(x, (err, result) => {
       //console.log(result[0].bid);
@@ -210,9 +210,9 @@ app.get("/selectadmin", (req, res) => {
   if (!con._connectCalled) {
     con.connect(err => {
       if (err) throw err;
-      var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id_orders ;`;
+      var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id ;`;
       con.query(x, (err, result) => {
-        console.log(result);
+        //console.log(result);
         //res.setHeader("Content-type", "application/json");
         res.send(JSON.stringify(result));
       });
@@ -222,16 +222,30 @@ app.get("/selectadmin", (req, res) => {
 
 //get model_id from related order_id
 app.get("/selectorder", (req, res) => {
-  con.connect(err => {
-    if (err) throw err;
-    var y = `SELECT M.model_name,M.model_id,M.blueprint FROM contain C,model M WHERE C.order_id_contain=1 AND C.model_id_contain=M.model_id`;
-
-    con.query(y, (err, result) => {
-      //console.log(result[0].bid);
-      res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(result));
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
     });
-  });
+  }
+  if (!con._connectCalled) {
+    con.connect(err => {
+      if (err) throw err;
+      //console.log(req.query.orderId);
+      var y = `SELECT M.model_name,M.model_id,M.blueprint FROM contain C,model M WHERE C.order_id=${
+        req.query.orderId
+      } AND C.model_id=M.model_id`;
+      //console.log(y);
+      con.query(y, (err, result) => {
+        console.log(JSON.stringify(result));
+        //res.setHeader("Content-type", "application/json");
+        res.send(JSON.stringify(result));
+      });
+    });
+  }
 });
 
 /*
