@@ -41,11 +41,10 @@ body {
 }
 
 /* Table background */
-
 .wraper {
     background-color: #F1F1F1;
     border-radius: 8px 8px 8px 8px;
-    margin: 0 450px;
+    margin: 0 600px;
 }
 
 .container {
@@ -56,6 +55,7 @@ body {
     max-width: 1920px
 }
 
+/* Table */
 .header {
     margin-bottom: 20px;
     font-weight: 500;
@@ -79,4 +79,9 @@ body {
 
 .item {
     margin-bottom: 8px;
+}
+
+.btn-primary {
+    width: 110px;
+    margin-right: 20px;
 }
