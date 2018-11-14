@@ -17,7 +17,9 @@ var con = mysql.createConnection({
 
 //INSERT	Client send order to company
 app.post("/insert", (req, res) => {
+  console.log("Insert start");
   if (con._connectCalled) {
+    console.log("con._connectCalled");
     con.end();
     con = mysql.createConnection({
       host: "localhost",
@@ -29,7 +31,6 @@ app.post("/insert", (req, res) => {
   if (!con._connectCalled) {
     console.log(`insert\n${req.body}`);
     var temp = req.body;
-
     var order_id = 1;
     var sw = 0;
     con.connect(err => {
@@ -38,6 +39,7 @@ app.post("/insert", (req, res) => {
       //insert orders table
       con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
         if (result.length != 0) order_id = parseInt(result[0].max) + 1;
+        if (isNaN(order_id)) order_id = 1;
         con.query(
           `INSERT INTO orders VALUES (${order_id},NOW(),${
             temp.cus_id
@@ -54,14 +56,14 @@ app.post("/insert", (req, res) => {
               "SELECT max(model_id) as max FROM model",
               (err, result) => {
                 if (result.length != 0) model_id = parseInt(result[0].max) + 1;
-
+                if (isNaN(model_id)) model_id = 1;
                 var model = [];
                 for (var i = 0; i < temp.items.length; i++) {
                   model.push([
                     model_id + i,
                     model_price,
                     temp.items[i].model_name,
-                    "222",
+                    "",
                     parseInt(temp.cus_id)
                   ]);
                 }
@@ -97,36 +99,88 @@ app.post("/insert", (req, res) => {
   }
 });
 
+// UPDATE blueprint
+// TODO: Check pls
+app.post("/updateblueprint", (req, res) => {
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if (!con._connectCalled) {
+    var temp = req.body;
+    con.connect(err => {
+      if (err) throw err;
+      // Update blueprint
+      con.query(
+        `UPDATE model SET blueprint = '' WHERE model_name = ${temp.model_name}`
+      );
+    });
+  }
+});
+
 //UPDATE	Admin accept order from client
 app.post("/update", (req, res) => {
-  var temp = req.body;
-  con.connect(err => {
-    if (err) throw err;
-    // insert accept table
-    con.query(
-      `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
-    );
-    con.query(
-      `INSERT INTO quotation VALUES (${temp.order_id},Date(),${temp.quo_price})`
-    );
-    con.query(
-      `UPDATE orders SET order_status = 'quotation_sent' WHERE order_id = ${
-        temp.order_id
-      }`
-    );
-  });
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if (!con._connectCalled) {
+    var temp = req.body;
+    con.connect(err => {
+      if (err) throw err;
+      // insert accept table
+      console.log(temp);
+      con.query(
+        `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
+      );
+      console.log(temp);
+      con.query(
+        `INSERT INTO quotation VALUES (${temp.order_id},NOW(),${
+          temp.quo_price
+        })`
+      );
+      console.log(temp);
+      con.query(
+        `UPDATE orders SET order_status = 'Quotation sent' WHERE order_id = ${
+          temp.order_id
+        }`
+      );
+      console.log(temp);
+    });
+  }
 });
 
 //UPDATE	Admin update model price
 app.post("/updateprice", (req, res) => {
-  con.connect(err => {
-    if (err) throw err;
-    con.query(
-      `UPDATE model SET model_price = ${
-        req.body.model_price
-      } WHERE model_id = ${req.body.model_id}`
-    );
-  });
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if (!con._connectCalled) {
+    con.connect(err => {
+      if (err) throw err;
+      con.query(
+        `UPDATE model SET model_price = ${
+          req.body.model_price
+        } WHERE model_id = ${req.body.model_id}`
+      );
+    });
+  }
 });
 
 //DELETE	Client cancel recieved quotation
