@@ -40,9 +40,9 @@ create table orders(			#cannot use the name order, not valid
 );
 create table work_on(
     order_id int not null,
-    cus_id int not null,
-    primary key (order_id,cus_id),
-    foreign key (cus_id) references customer_company(cus_id) on delete cascade,
+    emp_id int not null,
+    primary key (order_id,emp_id),
+    foreign key (emp_id) references employee(emp_id) on delete cascade,
     foreign key (order_id) references orders(order_id) on delete cascade
 );
 create table outsource_company(
