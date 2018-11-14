@@ -1,0 +1,51 @@
+body {
+    font-size: 24px;
+}
+
+.h1 {
+    font-size: 0.95em;
+    font-weight: normal;
+}
+
+.navbar-dark {
+    padding: 8px 25px;
+    background-color: #444444;
+}
+
+.client-name {
+    font-size: 0.85em;
+}
+
+.title {
+    font-size: 1.2em;
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+
+.item {
+    margin-bottom: 8px;
+}
+
+.btn {
+    width: 100px;
+    margin-left: -15px;
+}
+
+.btn-danger {
+    margin-left: -80px;
+}
+
+.container {
+    font-size: 0.75em;
+    margin: 10px 0 15px 0;
+    padding: 0;
+}
+
+.wraper {
+    margin: 0 60px;
+}
+
+.header {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
