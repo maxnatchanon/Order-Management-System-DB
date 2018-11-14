@@ -84,8 +84,15 @@ create table accept(
     foreign key (order_id) references orders(order_id),
     primary key (admin_username,order_id)
 );
+create table send(
+    cus_id int not null,
+    order_id int not null,
+    foreign key (cus_id) references customer_company(cus_id),
+    foreign key (order_id) references orders(order_id),
+    primary key (cus_id,order_id)
+);
 create table quotation(
-	order_id int not null,
+    order_id int not null,
     quo_date date not null check(quo_date>'2005-01-01'), 
     quo_price int not null check(quo_price>0),
     primary key (order_id),
