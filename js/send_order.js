@@ -5,7 +5,7 @@ function addItem() {
 
   // Create model name text input then append to row
   var modelName = document.createElement("div");
-  modelName.className = "col-5 col";
+  modelName.className = "col-5";
   var input1 = document.createElement("input");
   input1.type = "text";
   input1.name = "ModelName";
@@ -15,7 +15,7 @@ function addItem() {
 
   // Create quantity text input then append to row
   var quantity = document.createElement("div");
-  quantity.className = "col-1 col";
+  quantity.className = "col-2";
   var input2 = document.createElement("input");
   input2.type = "text";
   input2.name = "Quantity";
@@ -25,7 +25,7 @@ function addItem() {
 
   // Create blueprint picture input then append to row
   var blueprint = document.createElement("div");
-  blueprint.className = "col-4 col";
+  blueprint.className = "col-5";
   var input3 = document.createElement("input");
   input3.type = "file";
   input3.name = "Blueprint";
@@ -39,6 +39,7 @@ function addItem() {
 }
 
 function sendOrder() {
+  if (!confirm("Send order?")) return;
   // Create new http post request
   var xhr = new XMLHttpRequest();
   var url = "/insert";
