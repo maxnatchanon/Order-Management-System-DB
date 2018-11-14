@@ -126,21 +126,32 @@ app.post("/updateblueprint", (req, res) => {
 //UPDATE	Admin accept order from client
 app.post("/update", (req, res) => {
   var temp = req.body;
-  con.connect(err => {
-    if (err) throw err;
-    // insert accept table
-    con.query(
-      `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
-    );
-    con.query(
-      `INSERT INTO quotation VALUES (${temp.order_id},Date(),${temp.quo_price})`
-    );
-    con.query(
-      `UPDATE orders SET order_status = 'Quotation sent' WHERE order_id = ${
-        temp.order_id
-      }`
-    );
-  });
+  if(con._connectCalled){
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  if(!con._connectCalled){
+    con.connect(err => {
+      if (err) throw err;
+      // insert accept table
+      con.query(
+        `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
+      );
+      con.query(
+        `INSERT INTO quotation VALUES (${temp.order_id},NOW(),${temp.quo_price})`
+      );
+      con.query(
+        `UPDATE orders SET order_status = 'Quotation sent' WHERE order_id = ${
+          temp.order_id
+        }`
+      );
+    });
+  }
 });
 
 //UPDATE	Admin update model price
