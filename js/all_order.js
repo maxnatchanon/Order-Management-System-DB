@@ -11,21 +11,21 @@ Http.onreadystatechange = function() {
       row.className = "row item";
       var col = [];
       for (var i = 0; i < 5; i++) col.push(document.createElement("div"));
-      col[0].className = "col-1";
+      col[0].className = "col";
       col[0].innerHTML = json[item].order_id;
-      col[1].className = "col-2";
+      col[1].className = "col";
       col[1].innerHTML = json[item].order_date;
-      col[2].className = "col-2";
+      col[2].className = "col-3";
       col[2].innerHTML = json[item].order_status;
       col[3].className = "col-2";
       col[3].innerHTML = json[item].cus_name;
-      col[4].className = "col-3";
+      col[4].className = "col";
       if (json[item].order_status === "New order") {
         var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "btn btn-primary";
         btn.innerHTML = "CONFIRM";
-		btn.setAttribute("onclick", "goToConfirm()");
+		    btn.setAttribute("onclick", "goToConfirm()");
         col[4].appendChild(btn);
       }
       for (var i = 0; i < 5; i++) row.appendChild(col[i]);
