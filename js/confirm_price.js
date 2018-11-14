@@ -18,7 +18,7 @@ xmlHttp.onreadystatechange = function() {
       col2.appendChild(btn);
       row.appendChild(col2);
       var col3 = document.createElement("div");
-      col3.className = "col-4 input-wraper";
+      col3.className = "col-4";
       var input = document.createElement("input");
       input.type = "text";
       col3.appendChild(input);
