@@ -11,30 +11,32 @@ Http.onreadystatechange = function() {
             var row = document.createElement("div");
             row.className = "row item";
             var col = [];
-            for (var i = 0; i < 5; i++) col.push(document.createElement("div"));
+            for (var i = 0; i < 4; i++) col.push(document.createElement("div"));
             col[0].className = "col-2";
             col[0].id = "order_id";
             col[0].innerHTML = json[item].order_id;
             col[1].className = "col-2";
             col[1].innerHTML = json[item].order_date;
-            col[2].className = "col-2";
+            col[2].className = "col-3";
             col[2].innerHTML = json[item].order_status;
-            col[3].className = "col-2";
+            col[3].className = "col-5";
             var btn1 = document.createElement("button");
             btn1.type = "button";
             btn1.className = "btn btn-primary";
             btn1.innerHTML = "DETAIL";
             col[3].appendChild(btn1);
-            col[4].className = "col-2";
-            if (json[item].order_status === "Quotation sent") {
+            if (json[item].order_status === "Quotation sent" || json[item].order_status === "New order") {
                 var btn2 = document.createElement("button");
                 btn2.type = "button";
                 btn2.className = "btn btn-danger";
                 btn2.innerHTML = "CANCEL";
                 btn2.onclick = "cancelOrder(" + item + ")";
-                col[4].appendChild(btn2);
+                col[3].appendChild(btn2);
             }
-            for (var i = 0; i < 5; i++) row.appendChild(col[i]);
+            else {
+                btn1.style = "margin-right: 105px";
+            }
+            for (var i = 0; i < 4; i++) row.appendChild(col[i]);
             document.getElementById("orders").appendChild(row);
         }
     }
