@@ -1,12 +1,7 @@
-const Http = new XMLHttpRequest();
-const url = "/selectorder";
-Http.open("GET", url);
-var orderId = { order_id: 1 };
-Http.send(orderId);
-Http.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    var json = JSON.parse(Http.responseText);
-
+var xmlHttp = new XMLHttpRequest();
+xmlHttp.onreadystatechange = function() {
+  if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+    var json = JSON.parse(xmlHttp.responseText);
     for (var i = 0; i < json.length; i++) {
       var row = document.createElement("div");
       row.className = "row item";
@@ -32,6 +27,10 @@ Http.onreadystatechange = function() {
     }
   }
 };
+xmlHttp.open("GET", "/selectorder" + "?" + "orderId=1", true); // true for asynchronous
+var orderId = { order_id: 1 };
+xmlHttp.send(null);
+
 
 function confirmPrice() {
   // Lopp through models and send update price request
