@@ -27,6 +27,12 @@ body {
     font-size: 0.95em;
 }
 
+img {
+    margin-top: -90px;
+    z-index: -1;
+    position: absolute;
+}
+
 /* Title */
 .h1 {
     font-size: 0.95em;
@@ -44,7 +50,8 @@ body {
 .wraper {
     background-color: #F1F1F1;
     border-radius: 8px 8px 8px 8px;
-    margin: 0 300px;
+    margin: 0 auto;
+    width: 800px;
 }
 
 .container {

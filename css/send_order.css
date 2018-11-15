@@ -1,9 +1,5 @@
 body {
     font-size: 24px;
-    background-image: url(../assets/header-bg.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: top; 
     background-color: white;
     font-family: 'Roboto';
     font-weight: normal;
@@ -27,6 +23,12 @@ body {
     font-size: 0.95em;
 }
 
+img {
+    margin-top: -90px;
+    z-index: -1;
+    position: absolute;
+}
+
 /* Title */
 .h1 {
     font-size: 0.95em;
@@ -45,7 +47,8 @@ body {
 .wraper {
     border-radius: 8px 8px 0 0;
     background-color: #F1F1F1;
-    margin: 0 450px;
+    margin: 0 auto;
+    width: 540px;
 }
 
 .container {
@@ -64,6 +67,7 @@ input[type="text"] {
 input[type="file"] {
     font-size: 0.7em;
     width: 180px;
+    margin-bottom: 5px;
 }
 
 .header {

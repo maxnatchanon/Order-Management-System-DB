@@ -9,6 +9,12 @@ body {
     font-weight: normal;
 }
 
+img {
+    margin-top: -90px;
+    z-index: -1;
+    position: absolute;
+}
+
 /* Navbar */
 .navbar-dark {
     padding: 18px 32px;
@@ -45,7 +51,8 @@ body {
 .wraper {
     border-radius: 8px 8px 8px 8px;
     background-color: #F1F1F1;
-    margin: 0 650px;
+    margin: 0 auto;
+    width: 620px;
     padding-bottom: 5px;
 }
 
@@ -82,17 +89,4 @@ body {
 .btn {
     width: 90px;
     margin: 0 5px;
-}
-
-.input-wraper {
-    padding: 0 20px 0 30px;
-}
-
-input {
-    width: 100%;
-}
-
-.btn-wraper {
-    background-color: #F1F1F1;
-    margin: 0 650px;
 }
