@@ -41,7 +41,7 @@ app.post("/insert", (req, res) => {
         if (result.length != 0) order_id = parseInt(result[0].max) + 1;
         if (isNaN(order_id)) order_id = 1;
         con.query(
-          `INSERT INTO orders VALUES (${order_id},NOW(),${
+          `INSERT INTO orders VALUES (${order_id},CURRENT_DATE(),${
             temp.cus_id
           },'New order')`,
           (err, result) => {
@@ -143,7 +143,7 @@ app.post("/update", (req, res) => {
         `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
       );
       con.query(
-        `INSERT INTO quotation VALUES (${temp.order_id},NOW(),${temp.quo_price})`
+        `INSERT INTO quotation VALUES (${temp.order_id},CURDATE(),${temp.quo_price})`
       );
       con.query(
         `UPDATE orders SET order_status = 'Quotation sent' WHERE order_id = ${

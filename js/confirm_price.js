@@ -7,18 +7,18 @@ xmlHttp.onreadystatechange = function() {
       row.className = "row item";
       row.id = json[i].model_id.toString();
       var col1 = document.createElement("div");
-      col1.className = "col-3";
+      col1.className = "col-4";
       col1.innerHTML = json[i].model_name;
       row.appendChild(col1);
       var col2 = document.createElement("div");
-      col2.className = "col-2";
+      col2.className = "col-3";
       var btn = document.createElement("button");
       btn.className = "btn btn-primary";
       btn.innerHTML = "VIEW";
       col2.appendChild(btn);
       row.appendChild(col2);
       var col3 = document.createElement("div");
-      col3.className = "col-2";
+      col3.className = "col-4";
       var input = document.createElement("input");
       input.type = "text";
       col3.appendChild(input);
@@ -45,6 +45,9 @@ function confirmPrice() {
   }
   // Send order update request with sumPrice
   sendOrderUpdateReq(orderId.order_id, "JuilnwZa", sumPrice);
+  // window.location.href = "/allorder";
+  alert('Order sent!');
+  window.location.href = "/allorder";
 }
 
 function sendPriceUpdateReq(modelId, modelPrice) {
