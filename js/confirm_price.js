@@ -45,6 +45,9 @@ function confirmPrice() {
   }
   // Send order update request with sumPrice
   sendOrderUpdateReq(orderId.order_id, "JuilnwZa", sumPrice);
+  // window.location.href = "/allorder";
+  alert('Order sent!');
+  window.location.href = "/allorder";
 }
 
 function sendPriceUpdateReq(modelId, modelPrice) {
