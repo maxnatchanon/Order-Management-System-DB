@@ -1,8 +1,9 @@
 const Http = new XMLHttpRequest();
 const url='/select';
-Http.open("GET", url);
+//yatch edit
+Http.open("GET", "/select"+"?"+"cus_id_orders=1",true);
 var cusId = {cus_id_orders: 1} // TODO: Edit cus_id
-Http.send(cusId);
+Http.send();
 Http.onreadystatechange = function() {
     if (this.readyState==4 && this.status==200) {
         var json = JSON.parse(Http.responseText);
@@ -13,7 +14,7 @@ Http.onreadystatechange = function() {
             var col = [];
             for (var i = 0; i < 4; i++) col.push(document.createElement("div"));
             col[0].className = "col-1";
-            col[0].id = "order_id";
+            col[0].id = "order_id"+item;
             col[0].innerHTML = json[item].order_id;
             col[1].className = "col-2";
             col[1].innerHTML = json[item].order_date;
@@ -30,7 +31,9 @@ Http.onreadystatechange = function() {
                 btn2.type = "button";
                 btn2.className = "btn btn-danger";
                 btn2.innerHTML = "CANCEL";
-                btn2.onclick = "cancelOrder(" + item + ")";
+                //yatch edit
+                btn2.setAttribute("onclick", "cancelOrder("+item+")");
+                //yatch edit
                 col[3].appendChild(btn2);
             }
             else {
@@ -55,8 +58,10 @@ function cancelOrder(idx) {
             }
         };
         // Create and send data
-        var items = document.getElementsByClassName("item");
-        var orderId = items[idx].getElementById("order_id").innerHTML;
+        //yatch edit
+        var item = document.getElementById("order_id"+idx)
+        var orderId = item.innerText;
+        //yatch edit
         var obj = {
             order_id: orderId
         }

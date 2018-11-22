@@ -180,32 +180,56 @@ app.post("/updateprice", (req, res) => {
 //DELETE	Client cancel recieved quotation
 app.post("/delete", (req, res) => {
   //ToDo Sun
-  con.connect(err => {
-    if (err) throw err;
-    con.query(
-      `DELETE FROM orders WHERE order_id = ${req.body.order_id}`,
-      function(err, result) {
-        if (err) throw err;
-        console.log("deleted...");
-      }
-    );
-  });
+  console.log(req.body.order_id)
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
+    });
+  }
+  else {
+    con.connect(err => {
+      if (err) throw err;
+      con.query(
+        `DELETE FROM orders WHERE order_id = ${req.body.order_id}`,
+        function(err, result) {
+          if (err) throw err;
+          console.log("deleted...");
+        }
+      );
+    });
+  }
 });
 
 //QUERY	Order list
 app.get("/select", (req, res) => {
   //ToDo Sun
-  con.connect(err => {
-    if (err) throw err;
-    var x = `SELECT O.order_id,O.order_date,C.client_name FROM orders O,client C WHERE C.cus_id=${
-      req.body.cus_id
-    } AND C.cus_id=O.cus_id_orders`;
-    con.query(x, (err, result) => {
-      //console.log(result[0].bid);
-      res.setHeader("Content-type", "application/json");
-      res.send(JSON.stringify(result));
+  if (con._connectCalled) {
+    con.end();
+    con = mysql.createConnection({
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "company_project"
     });
-  });
+  }
+  else {
+    console.log(req.query);
+    con.connect(err => {
+      if (err) throw err;
+      var x = `SELECT O.order_id,O.order_date,O.order_status,C.cus_name FROM orders O,customer_company C WHERE C.cus_id=${
+        req.query.cus_id_orders
+      } AND C.cus_id=O.cus_id`;
+      con.query(x, (err, result) => {
+        console.log(JSON.stringify(result));
+       // res.setHeader("Content-type", "application/json");
+        res.send(JSON.stringify(result));
+      });
+    });
+  }
 });
 
 app.get("/selectadmin", (req, res) => {
@@ -252,7 +276,7 @@ app.get("/selectorder", (req, res) => {
       //console.log(y);
       con.query(y, (err, result) => {
         console.log(JSON.stringify(result));
-        //res.setHeader("Content-type", "application/json");
+        res.setHeader("Content-type", "application/json");
         res.send(JSON.stringify(result));
       });
     });
@@ -281,5 +305,10 @@ app.get("/confirm_price", (req, res) => {
   console.log(path.join(__dirname + "/html/confirm_price.html"));
   res.sendFile(path.join(__dirname + "/html/confirm_price.html"));
 });
+app.get("/delete_order", (req, res) => {
+  console.log(path.join(__dirname + "/html/delete_order.html"));
+  res.sendFile(path.join(__dirname + "/html/delete_order.html"));
+});
+
 
 app.listen(port, () => console.log(`listening on port ${port}`));
