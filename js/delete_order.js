@@ -3,7 +3,7 @@ const url='/select';
 //yatch edit
 Http.open("GET", "/select"+"?"+"cus_id_orders=1",true);
 var cusId = {cus_id_orders: 1} // TODO: Edit cus_id
-Http.send();
+Http.send(null);
 Http.onreadystatechange = function() {
     if (this.readyState==4 && this.status==200) {
         var json = JSON.parse(Http.responseText);
@@ -16,9 +16,10 @@ Http.onreadystatechange = function() {
             col[0].className = "col-1";
             col[0].id = "order_id"+item;
             col[0].innerHTML = json[item].order_id;
-            col[1].className = "col-2";
-            col[1].innerHTML = json[item].order_date;
-            col[2].className = "col-4";
+            col[1].className = "col-3";
+            var idx1 = json[item].order_date.search("T");
+            col[1].innerHTML = json[item].order_date.substring(0,idx1);
+            col[2].className = "col-3";
             col[2].innerHTML = json[item].order_status;
             col[3].className = "col-5";
             var btn1 = document.createElement("button");
@@ -55,6 +56,7 @@ function cancelOrder(idx) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
+                window.location.reload(true);
             }
         };
         // Create and send data

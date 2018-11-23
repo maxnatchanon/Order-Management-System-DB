@@ -14,7 +14,8 @@ Http.onreadystatechange = function() {
       col[0].className = "col";
       col[0].innerHTML = json[item].order_id;
       col[1].className = "col-2";
-      col[1].innerHTML = json[item].order_date;
+      var idx1 = json[item].order_date.search("T");
+      col[1].innerHTML = json[item].order_date.substring(0,idx1);
       col[2].className = "col-3";
       col[2].innerHTML = json[item].order_status;
       col[3].className = "col-3";
@@ -25,7 +26,7 @@ Http.onreadystatechange = function() {
         btn.type = "button";
         btn.className = "btn btn-primary";
         btn.innerHTML = "CONFIRM";
-		    btn.setAttribute("onclick", "goToConfirm()");
+		    btn.setAttribute("onclick", "goToConfirm("+json[item].order_id+")");
         col[4].appendChild(btn);
       }
       for (var i = 0; i < 5; i++) row.appendChild(col[i]);
@@ -66,6 +67,9 @@ Http.onreadystatechange = function() {
 //   document.getElementById("orders").appendChild(row);
 // }
 
-function goToConfirm() {
-	window.location.href = "/confirm_price"
+function goToConfirm(idx) {
+  if (confirm("Cancel order #" + idx + "?")) {
+    sessionStorage.setItem("order_id",idx);
+    window.location.href = "/confirm_price"
+  }
 }

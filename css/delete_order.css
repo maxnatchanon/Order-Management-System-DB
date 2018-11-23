@@ -1,9 +1,5 @@
 body {
     font-size: 24px;
-    background-image: url(../assets/header-bg.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: top; 
     background-color: white;
     font-family: 'Roboto';
     font-weight: normal;
@@ -54,6 +50,7 @@ img {
     margin: 0 auto;
     width: 620px;
     padding-bottom: 5px;
+    margin-bottom: 40px;
 }
 
 .container {

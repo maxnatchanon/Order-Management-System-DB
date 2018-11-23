@@ -1,9 +1,5 @@
 body {
     font-size: 24px;
-    background-image: url(../assets/header-bg.png);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: top; 
     background-color: white;
     font-family: 'Roboto';
     font-weight: normal;
@@ -53,7 +49,7 @@ img {
     background-color: #F1F1F1;
     margin: 0 auto;
     width: 450px;
-    padding-bottom: 20px;
+    /* padding-bottom: 20px; */
 }
 
 .container {
@@ -108,6 +104,7 @@ img {
 input {
     width: 100%;
     margin-left: 10px;
+    text-align: center;
 }
 
 .btn-wraper {

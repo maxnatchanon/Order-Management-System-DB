@@ -46,11 +46,17 @@ function sendOrder() {
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      var json = JSON.parse(xhr.responseText);
+      //var json = JSON.parse(xhr.responseText);
+      console.log("sent");
+      window.location.href = '/delete_order';
     }
   };
   // Create and send data
   var itemList = createObj();
+  if(itemList === false) {
+    alert("invalid input")
+    return;
+  }
   var data = JSON.stringify(itemList);
   xhr.send(data);
   // // jui edit
@@ -79,6 +85,9 @@ function createObj() {
       blueprint: itemData.item(i).getElementsByClassName("blueprint")[0].value,
       amount: itemData.item(i).getElementsByClassName("quantity")[0].value
     };
+    if (isNaN(item.amount)||item.amount==='') return false;
+    if (item.model_name === '') return false;
+    
     // getImageBinary(
     //   itemData.item(i).getElementsByClassName("blueprint")[0],
     //   itemData.item(i).getElementsByClassName("modelName")[0].value

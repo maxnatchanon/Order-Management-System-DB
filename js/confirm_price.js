@@ -2,6 +2,7 @@ var xmlHttp = new XMLHttpRequest();
 xmlHttp.onreadystatechange = function() {
   if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
     var json = JSON.parse(xmlHttp.responseText);
+    document.getElementById('order_id').innerHTML = sessionStorage.getItem('order_id');
     for (var i = 0; i < json.length; i++) {
       var row = document.createElement("div");
       row.className = "row item";
@@ -27,7 +28,8 @@ xmlHttp.onreadystatechange = function() {
     }
   }
 };
-xmlHttp.open("GET", "/selectorder" + "?" + "orderId=1", true); // true for asynchronous
+console.log(sessionStorage.getItem('order_id'))
+xmlHttp.open("GET", "/selectorder" + "?" + "orderId="+sessionStorage.getItem('order_id'), true); // true for asynchronous
 var orderId = { order_id: 1 };
 xmlHttp.send(null);
 
@@ -39,6 +41,11 @@ function confirmPrice() {
   for (var i = 0; i < items.length; i++) {
     var modelId = parseInt(items[i].id);
     var modelPrice = items[i].getElementsByTagName("input")[0].value;
+    console.log(modelPrice);
+    if(isNaN(modelPrice) || modelPrice === '') {
+      alert("invalid input");
+      return 
+    }
     modelPrice = parseInt(modelPrice);
     sumPrice += modelPrice;
     sendPriceUpdateReq(modelId, modelPrice);

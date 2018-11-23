@@ -15,27 +15,18 @@ var con = mysql.createConnection({
   database: "company_project"
 });
 
+con.connect(function(err) {
+    if (err) throw err;
+});
+//var con = require("./mySqlConnect")
+
 //INSERT	Client send order to company
 app.post("/insert", (req, res) => {
   console.log("Insert start");
-  if (con._connectCalled) {
-    console.log("con._connectCalled");
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if (!con._connectCalled) {
     console.log(`insert\n${req.body}`);
     var temp = req.body;
     var order_id = 1;
     var sw = 0;
-    con.connect(err => {
-      if (err) throw err;
-
       //insert orders table
       con.query("SELECT max(order_id) as max FROM orders", (err, result) => {
         if (result.length != 0) order_id = parseInt(result[0].max) + 1;
@@ -88,6 +79,7 @@ app.post("/insert", (req, res) => {
                   (err, result) => {
                     if (err) throw err;
                     console.log("jui3");
+                    res.send(null);
                   }
                 );
               }
@@ -95,49 +87,24 @@ app.post("/insert", (req, res) => {
           }
         );
       });
-    });
-  }
+    
+  
 });
 
 // UPDATE blueprint
 // TODO: Check pls
 app.post("/updateblueprint", (req, res) => {
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if (!con._connectCalled) {
     var temp = req.body;
-    con.connect(err => {
-      if (err) throw err;
       // Update blueprint
       con.query(
         `UPDATE model SET blueprint = '' WHERE model_name = ${temp.model_name}`
       );
-    });
-  }
+  
 });
 
 //UPDATE	Admin accept order from client
 app.post("/update", (req, res) => {
   var temp = req.body;
-  if(con._connectCalled){
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if(!con._connectCalled){
-    con.connect(err => {
-      if (err) throw err;
       // insert accept table
       con.query(
         `INSERT INTO accept VALUES ('${temp.admin_username}',${temp.order_id})`
@@ -150,125 +117,62 @@ app.post("/update", (req, res) => {
           temp.order_id
         }`
       );
-    });
-  }
 });
 
 //UPDATE	Admin update model price
 app.post("/updateprice", (req, res) => {
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if (!con._connectCalled) {
-    con.connect(err => {
-      if (err) throw err;
+  
+     
       con.query(
         `UPDATE model SET model_price = ${
           req.body.model_price
         } WHERE model_id = ${req.body.model_id}`
       );
-    });
-  }
+    
 });
 
 //DELETE	Client cancel recieved quotation
 app.post("/delete", (req, res) => {
   //ToDo Sun
-  console.log(req.body.order_id)
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  else {
-    con.connect(err => {
-      if (err) throw err;
       con.query(
         `DELETE FROM orders WHERE order_id = ${req.body.order_id}`,
         function(err, result) {
           if (err) throw err;
           console.log("deleted...");
+          res.send(JSON.stringify({redirect: '/delete_order' }));
         }
       );
-    });
-  }
+    
+  
 });
 
 //QUERY	Order list
 app.get("/select", (req, res) => {
   //ToDo Sun
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  else {
-    console.log(req.query);
-    con.connect(err => {
-      if (err) throw err;
       var x = `SELECT O.order_id,O.order_date,O.order_status,C.cus_name FROM orders O,customer_company C WHERE C.cus_id=${
         req.query.cus_id_orders
       } AND C.cus_id=O.cus_id`;
       con.query(x, (err, result) => {
         console.log(JSON.stringify(result));
-       // res.setHeader("Content-type", "application/json");
+        res.setHeader("Content-type", "application/json");
         res.send(JSON.stringify(result));
       });
-    });
-  }
+    
 });
 
 app.get("/selectadmin", (req, res) => {
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if (!con._connectCalled) {
-    con.connect(err => {
-      if (err) throw err;
+  
       var x = `SELECT order_id ,order_date, order_status ,cus_name  FROM orders LEFT JOIN customer_company ON customer_company.cus_id = orders.cus_id ;`;
       con.query(x, (err, result) => {
         //console.log(result);
         //res.setHeader("Content-type", "application/json");
         res.send(JSON.stringify(result));
       });
-    });
-  }
 });
 
 //get model_id from related order_id
 app.get("/selectorder", (req, res) => {
-  if (con._connectCalled) {
-    con.end();
-    con = mysql.createConnection({
-      host: "localhost",
-      user: "root",
-      password: "root",
-      database: "company_project"
-    });
-  }
-  if (!con._connectCalled) {
-    con.connect(err => {
-      if (err) throw err;
+  
       //console.log(req.query.orderId);
       var y = `SELECT M.model_name,M.model_id,M.blueprint FROM contain C,model M WHERE C.order_id=${
         req.query.orderId
@@ -279,8 +183,7 @@ app.get("/selectorder", (req, res) => {
         res.setHeader("Content-type", "application/json");
         res.send(JSON.stringify(result));
       });
-    });
-  }
+ 
 });
 
 /*
