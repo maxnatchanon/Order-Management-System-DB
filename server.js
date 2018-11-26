@@ -15,7 +15,7 @@ var con = mysql.createConnection({
   database: "company_project"
 });
 
-con.connect(function(err) {
+  con.connect(function(err) {
     if (err) throw err;
 });
 //var con = require("./mySqlConnect")
@@ -32,7 +32,7 @@ app.post("/insert", (req, res) => {
         if (result.length != 0) order_id = parseInt(result[0].max) + 1;
         if (isNaN(order_id)) order_id = 1;
         con.query(
-          `INSERT INTO orders VALUES (${order_id},CURRENT_DATE(),${
+          `INSERT INTO orders VALUES (${order_id},LOCALTIME(),${
             temp.cus_id
           },'New order')`,
           (err, result) => {
