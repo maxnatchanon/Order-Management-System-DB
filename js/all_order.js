@@ -14,8 +14,7 @@ Http.onreadystatechange = function() {
       col[0].className = "col";
       col[0].innerHTML = json[item].order_id;
       col[1].className = "col-2";
-     // var idx1 = json[item].order_date.search("T");
-     // col[1].innerHTML = json[item].order_date.substring(0,idx1);
+      //edit date
       var isoDate = new Date(json[item].order_date).toLocaleDateString()
       var date = isoDate.slice(3,6) + isoDate.slice(0,3) + isoDate.slice(6,10)
       col[1].innerHTML = date
