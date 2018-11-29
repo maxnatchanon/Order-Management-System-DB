@@ -29,8 +29,9 @@ xmlHttp.onreadystatechange = function() {
   }
 };
 console.log(sessionStorage.getItem('order_id'))
-xmlHttp.open("GET", "/selectorder" + "?" + "orderId="+sessionStorage.getItem('order_id'), true); // true for asynchronous
-var orderId = { order_id: 1 };
+var order_id = sessionStorage.getItem('order_id');
+xmlHttp.open("GET", "/selectorder" + "?" + "orderId="+order_id, true); // true for asynchronous
+var orderId = { order_id: order_id};
 xmlHttp.send(null);
 
 
@@ -53,7 +54,7 @@ function confirmPrice() {
   // Send order update request with sumPrice
   sendOrderUpdateReq(orderId.order_id, "JuilnwZa", sumPrice);
   // window.location.href = "/allorder";
-  alert('Order sent!');
+  alert('Quotation sent!');
   window.location.href = "/allorder";
 }
 

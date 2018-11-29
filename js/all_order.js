@@ -37,6 +37,12 @@ Http.onreadystatechange = function() {
   }
 };
 
+function goToConfirm(idx) {
+  if (confirm("Accept order #" + idx + "?")) {
+    sessionStorage.setItem("order_id",idx);
+    window.location.href = "/confirm_price"
+  }
+}
 /* TEST DATA */
 // json = [
 //   {order_id: 1, order_date: "21/11/18", order_status: "Sent quotation", cus_name: "Mobile BNK48"},
@@ -69,9 +75,4 @@ Http.onreadystatechange = function() {
 //   document.getElementById("orders").appendChild(row);
 // }
 
-function goToConfirm(idx) {
-  if (confirm("Cancel order #" + idx + "?")) {
-    sessionStorage.setItem("order_id",idx);
-    window.location.href = "/confirm_price"
-  }
-}
+
