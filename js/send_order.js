@@ -59,14 +59,6 @@ function sendOrder() {
   }
   var data = JSON.stringify(itemList);
   xhr.send(data);
-  // // jui edit
-  //     var jui = document.getElementsByClassName("item-data");
-  //     for (var i = 0 ; i < jui.length ; i++) {
-  //       itemData.item(i).getElementsByClassName("modelName")[0].value = "";
-  //       itemData.item(i).getElementsByClassName("blueprint")[0].value = "";
-  //       itemData.item(i).getElementsByClassName("quantity")[0].value = "";
-  //     }
-  // // jui edit end
 }
 
 function createObj() {
