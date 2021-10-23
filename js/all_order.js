@@ -43,6 +43,11 @@ function goToConfirm(idx) {
     window.location.href = "/confirm_price"
   }
 }
+
+function goToBack(idx) {
+  sessionStorage.setItem("order_id",idx);
+  window.location.href = "/"
+}
 /* TEST DATA */
 // json = [
 //   {order_id: 1, order_date: "21/11/18", order_status: "Sent quotation", cus_name: "Mobile BNK48"},
