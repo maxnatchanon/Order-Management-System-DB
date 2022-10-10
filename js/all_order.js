@@ -52,7 +52,8 @@ function goToBack(idx) {
 // json = [
 //   {order_id: 1, order_date: "21/11/18", order_status: "Sent quotation", cus_name: "Mobile BNK48"},
 //   {order_id: 2, order_date: "21/11/18", order_status: "New order", cus_name: "Mobile BNK48"},
-//   {order_id: 3, order_date: "21/11/18", order_status: "Delivered", cus_name: "Mobile BNK48"}
+//   {order_id: 3, order_date: "21/11/18", order_status: "Delivered", cus_name: "Mobile BNK48"},
+//   {order_id: 3, order_date: "22/10/10", order_status: "Sent quotation", cus_name: "Jui"}
 // ]
 // for (var item = 0; item < json.length; item++) {
 //   var row = document.createElement("div");
