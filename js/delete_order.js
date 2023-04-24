@@ -73,3 +73,9 @@ function cancelOrder(idx) {
     }
 
 }
+
+func gotoBack() {
+    window.href = "/"
+}
+
+
